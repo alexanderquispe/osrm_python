@@ -78,6 +78,12 @@ Done!
 
 ## Installation
 
+github
+
+```
+pip install git+https://github.com/alexanderquispe/osrm_python
+```
+
 ## Usage
 
 Chile Example, [dbf]()
