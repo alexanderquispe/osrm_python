@@ -71,9 +71,37 @@
 - Move the file to your working environment.
   - Recomend -> Make a data directory `osrmdata`
 - Open the terminal and change the directory to your working environment.
-- Execute the following codes.
-  - `osrm-extract.exe -p C:\\osrm\car.lua {where\is\the\dbf\file}.pbf` (run one time) - Generate a `osrm` file extention
-  - `osrm-contract.exe {where\is\the\osrm\file}.osrm` (run one time)
-  - `osrm-routed.exe {where\is\the\osrm\file}.osrm` (run once for session)
 
 Done!
+
+# Python library
+
+## Installation
+
+## Usage
+
+Chile Example, [dbf]()
+
+```py
+from osrmareas.osrm import  Server
+from osrmareas import  areas
+all = areas.get_routes([-20.2015383, -70.1575468], radius_km=20)
+```
+
+Connection
+
+```python
+pbf_file = 'chile-latest.osm'
+pbf_file_path = 'D:\Workflow\work\osrm-backend\data'
+client = Server(pbf_file, pbf_file_path)
+client.prepare_server()
+client.run_server()
+```
+
+Areas
+
+```python
+all = areas.get_routes([-20.2015383, -70.1575468], radius_km=10)
+all.plot()
+areas.get_ameba(all, 5, alpha = 80).plot()
+```
