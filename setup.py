@@ -12,7 +12,6 @@ setup(
     author_email='fr.jhonk@gmail.com',
     packages=['osrmareas'],
     install_requires=[
-        'request', 
         'numpy<=1.24.3',
         'pandas',
 		'geopandas',
