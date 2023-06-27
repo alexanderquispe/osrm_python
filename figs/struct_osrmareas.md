@@ -1,0 +1,42 @@
+- Class `Server()`:
+
+  - `__init__()`
+    - `pbf_file`: The name of the PBF file, without the 'pbf' extension.
+    - `pbf_file_path`: The location of the file (absolute path).
+    - `osrm_path`: The location of the OSRM executable files.
+    - `method_lua`: The method to be used in the route tracing.
+  - `prepare_server()`:
+    - `self.prepare`: Checks if all the necessary files for running the server are available.
+    - `self.gen_osrm_file`: Execution command for converting the DBF file to OSRM.
+    - `self.gen_routes`: Execution command for the type of routes.
+    - `self.osrm_file`: Absolute location of the .osrm file.
+    - `self.pbf_file`: Absolute location of the .pbf file.
+    - `do`: Executes the commands in the console.
+  - `run_server()`
+    - `self.gen_backend`: Execution command for running the OSRM backend locally.
+    - `do`: Executes the OSRM backend in the console.
+
+- Module `areas`:
+  - `make_grid()`:
+    - x: X-coordinate.
+    - y: Y-coordinate.
+    - size_grid: Size of the grid (square) in kilometers.
+    - Returns the centroid of the grid.
+  - `get_osrm_route()`:
+    - `from_`: Array of latitude and longitude coordinates of the starting point.
+    - `to_`: Array of latitude and longitude coordinates of the destination point.
+    - `how`: Method for searching the route.
+    - `Returns`: The route calculated by OSRM and saves the route.
+  - `get_routes()`:
+    - `center`: The origin point from which the polygon area will be created.
+    - `radius_km`: The radius of the area to be created.
+    - `grid_km_size`: Size of the grid side to be created.
+    - `Returns`: DataFrame with all routes within the area, including the origin point, destination point for each route, and the total distance in kilometers.
+  - `get_ameba()`:
+    - `df`: The DataFrame containing the routes within the area.
+    - `max_km`: Filters the routes that are within this distance value.
+    - `alpha`: Precision for creating the shapefile.
+    - `xcol`: Destination x-column.
+    - `ycol`: Destination y-column.
+    - `km_col`: Column reference for the route distances.
+    - `crs`: CRS (Coordinate Reference System) information.
