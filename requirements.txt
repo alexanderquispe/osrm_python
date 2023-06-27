@@ -1,0 +1,6 @@
+request
+numpy<=1.24.3
+pandas
+geopandas
+alphashape
+shapely
