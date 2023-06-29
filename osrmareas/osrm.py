@@ -53,7 +53,7 @@ class Server:
 		file = fl.name
 
 		out_f = open(file, 'w')
-		out_f.writelines(comand)
+		out_f.writelines('algo')
 		out_f.close()
 
 		if os.path.exists(osrm_file):
