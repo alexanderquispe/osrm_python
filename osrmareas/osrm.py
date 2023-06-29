@@ -52,6 +52,11 @@ class Server:
 		if os.path.exists(osrm_file):
 			print('Found osrm file')
 			run_first = input(f"An OSRM file named '{osrm_file}' was found. Do you want to run the following command again: `osrm_extract.exe -p car.lua {pbf_file}`? [yes, no] (This will take some time)")
+		else:
+			with open(file, 'w') as bt:
+				bt.write(comand1)
+			subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
+			print(comand1)
 		
 		if "n" in run_first:
 			comand = f'''
@@ -63,10 +68,6 @@ class Server:
 		if os.path.exists(self._contract_file):
 			print('Found contract file')
 			run_second=input(f"Contract found, run again?")
-		else:
-			with open(file, 'w') as bt:
-				bt.write(comand1)
-			subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
 		
 		if 'n' in run_second:
 			comand = ''
