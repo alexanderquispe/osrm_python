@@ -51,15 +51,17 @@ class Server:
 
 		fl = tempfile.NamedTemporaryFile(delete=False, suffix='.bat')
 		file = fl.name
-		with open(file, 'w') as bt:
-			bt.write(comand)
+
+		out_f = open(file, 'w')
+		out_f.writelines(comand)
+		out_f.close()
 
 		if os.path.exists(osrm_file):
 			print('Found osrm file')
 			run_first = input(f"An OSRM file named '{osrm_file}' was found. Do you want to run the following command again: `osrm_extract.exe -p car.lua {pbf_file}`? [yes, no] (This will take some time)")
 		else:
 			subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
-			# print(file)
+			print(file)
 			# print(comand1)
 		
 		if "n" in run_first:
