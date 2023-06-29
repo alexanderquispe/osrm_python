@@ -59,6 +59,7 @@ class Server:
 			with open(file, 'w') as bt:
 				bt.write(comand1)
 			subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
+			print(file)
 			print(comand1)
 		
 		if "n" in run_first:
