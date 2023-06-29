@@ -40,11 +40,11 @@ class Server:
 		gen_route = self.gen_routes
 		osrm_file = self.osrm_file
 		pbf_file = self.pbf_file
-		run_first="No"
 		comand = f'''
 {gen_osrm}
 {gen_route}
 			'''
+		comand1 = comand.copy()
 		
 		run_first = 'no'
 		run_second = 'no'
@@ -57,15 +57,19 @@ class Server:
 			comand = f'''
 {gen_route}
 			'''
+		fl = tempfile.NamedTemporaryFile(delete=False, suffix='.bat')
+		file = fl.name
 
 		if os.path.exists(self._contract_file):
 			print('Found contract file')
 			run_second=input(f"Contract found, run again?")
+		else:
+			with open(file, 'w') as bt:
+				bt.write(comand1)
+			subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
 		
 		if 'n' in run_second:
 			comand = ''
-		fl = tempfile.NamedTemporaryFile(delete=False, suffix='.bat')
-		file = fl.name
 		with open(file, 'w') as bt:
 			bt.write(comand)
 		subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
