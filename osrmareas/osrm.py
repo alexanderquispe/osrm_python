@@ -44,7 +44,7 @@ class Server:
 {gen_osrm}
 {gen_route}
 			'''
-		comand1 = comand.copy()
+		comand1 = comand
 		
 		run_first = 'no'
 		run_second = 'no'
