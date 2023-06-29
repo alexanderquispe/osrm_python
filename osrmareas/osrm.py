@@ -57,10 +57,10 @@ class Server:
 			run_first = input(f"An OSRM file named '{osrm_file}' was found. Do you want to run the following command again: `osrm_extract.exe -p car.lua {pbf_file}`? [yes, no] (This will take some time)")
 		else:
 			with open(file, 'w') as bt:
-				bt.write(comand1)
+				bt.write(comand)
 			subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
 			print(file)
-			print(comand1)
+			# print(comand1)
 		
 		if "n" in run_first:
 			comand = f'''
