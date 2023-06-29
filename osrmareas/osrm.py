@@ -49,6 +49,9 @@ class Server:
 		run_first = 'no'
 		run_second = 'no'
 
+		fl = tempfile.NamedTemporaryFile(delete=False, suffix='.bat')
+		file = fl.name
+
 		if os.path.exists(osrm_file):
 			print('Found osrm file')
 			run_first = input(f"An OSRM file named '{osrm_file}' was found. Do you want to run the following command again: `osrm_extract.exe -p car.lua {pbf_file}`? [yes, no] (This will take some time)")
@@ -62,8 +65,6 @@ class Server:
 			comand = f'''
 {gen_route}
 			'''
-		fl = tempfile.NamedTemporaryFile(delete=False, suffix='.bat')
-		file = fl.name
 
 		if os.path.exists(self._contract_file):
 			print('Found contract file')
