@@ -45,6 +45,9 @@ class Server:
 {gen_osrm}
 {gen_route}
 			'''
+		
+		run_first = 'no'
+		run_second = 'no'
 
 		if os.path.exists(osrm_file):
 			print('Found osrm file')
