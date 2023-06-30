@@ -79,28 +79,7 @@ class Server:
 			raise "The necessary files are not available, please run `Server(..).gen_osrm_1()` and `Server(...).prepare_server_2()` first."
 
 		gen_server = self.gen_backend
-		
-
 		subprocess.Popen(f'{gen_server}', shell=True)
 		print("The server is running in the background, you can start making queries.")
 
 		return self
-
-		
-		
-
-	
-
-		
-	# def make_grid(self, x, y, size_grid):
-	# 	return areas.make_grid(x, y, size_grid)
-	# def get_osrm_route_local(self, from_, to_, how_='driving'):
-	# 	return areas.get_osrm_route(from_, to_, how)
-	# def get_area_routes(self, center, radius_km, grid_km_size=1):
-	# 	routes_df = areas.get_routes(center, radius_km, grid_km_size)
-	# 	self.routes_df_area = routes_df
-	# 	return self
-	# def get_ameba(self, df, max_km=None, alpha=0, xcol='x', ycol='y', km_col='dist_km', crs=areas.crs_lat):
-	# 	ameba_shp = areas.get_ameba(df, max_km, alpha, xcol, ycol, km_col, crs)
-	# 	self.ameba = ameba_shp
-	# 	return self
