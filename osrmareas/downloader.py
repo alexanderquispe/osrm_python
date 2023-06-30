@@ -40,15 +40,23 @@ class GetPBF:
 			if not os.path.exists(save_into_dir):
 				os.makedirs(save_into_dir)
 		self.dir_name = save_into_dir
-	def continent(self, where:list):
+	def continent(self, where:list, save_dir=None):
+		if save_dir is not None:
+			self.dir_name = save_dir
+			if not os.path.exists(save_dir):
+				os.makedirs(save_dir)
 		ref=cnt.query('continent in @where').\
 			url_main.to_numpy()
 		ref = list(ref)
 		self.locations = ref
 		self.where = where
 		return self
-	def country(self, where:list, continent=None):
+	def country(self, where:list, continent=None, save_dir=None):
 		self.where = where
+		if save_dir is not None:
+			self.dir_name = save_dir
+			if not os.path.exists(save_dir):
+				os.makedirs(save_dir)
 		if continent is None:
 			ctrs=ctry.query('country in @where').\
 				url_main.to_numpy()
@@ -58,8 +66,12 @@ class GetPBF:
 			url_main.to_numpy()
 		self.locations = list(ctrs_spe)
 		return self
-	def sub_region(self, where:list, continent=None, country=None):
+	def sub_region(self, where:list, continent=None, country=None, save_dir=None):
 		self.where = where
+		if save_dir is not None:
+			self.dir_name = save_dir
+			if not os.path.exists(save_dir):
+				os.makedirs(save_dir)
 		if continent is None and country is None:
 			sr = region.query('region in @where').url_main\
 				.to_numpy()
