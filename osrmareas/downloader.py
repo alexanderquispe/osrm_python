@@ -12,7 +12,7 @@ region = pd.read_csv(region_df)
 # https://download.geofabrik.de/antarctica-latest-free.shp.zip
 # https://download.geofabrik.de/asia-latest.osm.bz2
 latest ='-latest'
-osrm_pbf = '.osrm.pbf'
+osrm_pbf = '.osm.pbf'
 zip_ext = '-free.shp.zip'
 osm_bz2 = '.osm.bz2'
 
