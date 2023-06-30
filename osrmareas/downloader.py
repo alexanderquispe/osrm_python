@@ -40,7 +40,6 @@ class GetPBF:
 			if not os.path.exists(save_into_dir):
 				os.makedirs(save_into_dir)
 		self.dir_name = save_into_dir
-		return self
 	def continent(self, where:list):
 		ref=cnt.query('continent in @where').\
 			url_main.to_numpy()
