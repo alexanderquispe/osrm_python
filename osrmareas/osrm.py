@@ -32,65 +32,58 @@ class Server:
 		self._prepare = False
 
 
-	def prepare_server(self):
-		if self._prepare:
-			return "Done!"
+	def gen_osrm_1(self):
 		print("Please run the following function only once for each .pbf file. (It takes some time to execute, and consume all the CPU)")
+
 		gen_osrm = self.gen_osrm_file
-		gen_route = self.gen_routes
 		osrm_file = self.osrm_file
-		pbf_file = self.pbf_file
-		comand = f'''
-{gen_osrm}
-{gen_route}
-			'''
-		comand1 = comand
-		
-		run_first = 'no'
-		run_second = 'no'
 
-		fl = tempfile.NamedTemporaryFile(delete=False, suffix='.bat')
-		file = fl.name
+		osrm_gen_=os.path.exists(osrm_file)
 
-		out_f = open(file, 'w')
-		out_f.writelines('algo')
-		out_f.close()
+		run_first="No"
 
-		if os.path.exists(osrm_file):
-			print('Found osrm file')
-			run_first = input(f"An OSRM file named '{osrm_file}' was found. Do you want to run the following command again: `osrm_extract.exe -p car.lua {pbf_file}`? [yes, no] (This will take some time)")
+		if not osrm_gen_:
+			subprocess.Popen(f'{gen_osrm}', shell=True).wait()
 		else:
-			subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
-			print(file)
-			# print(comand1)
-		
-		if "n" in run_first:
-			comand = f'''
-{gen_route}
-			'''
+			print(f'Found {osrm_file} file')
 
-		if os.path.exists(self._contract_file):
-			print('Found contract file')
-			run_second=input(f"Contract found, run again?")
-		
-		if 'n' in run_second:
-			comand = ''
-		with open(file, 'w') as bt:
-			bt.write(comand)
-		subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
+			run_first = input(f"An OSRM file named '{osrm_file}' was found. Do you want to run again? [yes, no] (This will take some time)")
+			if 'y' in run_first:
+				subprocess.Popen(f'{gen_osrm}', shell=True).wait()
+		print("Done, generate a osrm file")
+		return self
+
+	def prepare_server_2(self):
+		print("Please run the following function only once for each .pbf file. (It takes some time to execute, and consume all the CPU)")
+
+		gen_route = self.gen_routes
+		contract_file = self._contract_file
+		contract_ = os.path.exists()
+		run_second = "No"
+
+		if not contract_:
+			subprocess.Popen(f'{gen_route}', shell=True).wait()
+		else:
+			run_second = input(f"An HSGR file named '{contract_file}' was found. Do you want to run the following command again: [yes, no] (This will take some time)")
+			if 'y' in run_second:
+				subprocess.Popen(f'{gen_route}', shell=True).wait()
+			else:
+				pass
+		print('Done, I have generated the local OSRM server with `{server}.run_server()`.')
 		self._prepare = True
 		return self
-	def run_server(self):
-		gen_server = self.gen_backend
-		comand = f'''
-{gen_server}
-		'''
-		fl = tempfile.NamedTemporaryFile(delete=False, suffix='.bat')
-		file = fl.name
 
-		with open(file, 'w') as bt:
-			bt.write(comand)
-		subprocess.Popen(['start', 'cmd', '/c', 'call', file], shell = True)
+	def run_server(self):
+		ready=self._prepare
+		if not ready:
+			raise "The necessary files are not available, please run `Server(..).gen_osrm_1()` and `Server(...).prepare_server_2()` first."
+
+		gen_server = self.gen_backend
+		
+
+		subprocess.Popen(f'{gen_server}', shell=True)
+		print("The server is running in the background, you can start making queries.")
+
 		return self
 
 		
