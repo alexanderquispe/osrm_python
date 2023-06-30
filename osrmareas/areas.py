@@ -46,11 +46,11 @@ def get_osrm_route(from_, to_, how='driving'):
 	return line
 
 def get_routes(
-	center, radius_km=10, grid_km_size=1
+	center_lat_long, radius_km=10, grid_km_size=1
 	):
 
 	n_grid = radius_km/grid_km_size * 2
-
+	center = list(reversed(center_lat_long))
 	radius_km = radius_km * 1000
 	initial_center = Point(center)
 
