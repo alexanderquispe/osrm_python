@@ -58,7 +58,7 @@ class Server:
 
 		gen_route = self.gen_routes
 		contract_file = self._contract_file
-		contract_ = os.path.exists()
+		contract_ = os.path.exists(contract_file)
 		run_second = "No"
 
 		if not contract_:
