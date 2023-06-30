@@ -70,10 +70,10 @@ def get_routes(
 	# osrm routes
 	all_routes_df = gpd.GeoDataFrame()
 	for final in final_routes:
-		center = list(reversed(center))
-		final = list(reversed(final))
+		center1 = list(reversed(center))
+		final1 = list(reversed(final))
 		all_routes_df = \
-			pd.concat([all_routes_df, get_osrm_route(center, final)])
+			pd.concat([all_routes_df, get_osrm_route(center1, final1)])
 	
 	return all_routes_df
 
