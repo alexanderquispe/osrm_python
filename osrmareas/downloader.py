@@ -41,10 +41,7 @@ class GetPBF:
 				os.makedirs(save_into_dir)
 		self.dir_name = save_into_dir
 	def continent(self, where:list, save_dir=None):
-		if save_dir is not None:
-			self.dir_name = save_dir
-			if not os.path.exists(save_dir):
-				os.makedirs(save_dir)
+
 		ref=cnt.query('continent in @where').\
 			url_main.to_numpy()
 		ref = list(ref)
@@ -53,10 +50,7 @@ class GetPBF:
 		return self
 	def country(self, where:list, continent=None, save_dir=None):
 		self.where = where
-		if save_dir is not None:
-			self.dir_name = save_dir
-			if not os.path.exists(save_dir):
-				os.makedirs(save_dir)
+
 		if continent is None:
 			ctrs=ctry.query('country in @where').\
 				url_main.to_numpy()
@@ -68,10 +62,7 @@ class GetPBF:
 		return self
 	def sub_region(self, where:list, continent=None, country=None, save_dir=None):
 		self.where = where
-		if save_dir is not None:
-			self.dir_name = save_dir
-			if not os.path.exists(save_dir):
-				os.makedirs(save_dir)
+
 		if continent is None and country is None:
 			sr = region.query('region in @where').url_main\
 				.to_numpy()
@@ -92,9 +83,11 @@ class GetPBF:
 				url_main.to_numpy()
 			self.locations = list(sr)
 			return self
-	def get(self, ext='pbf'):
+	def get(self, ext='pbf', save_dir=None):
+		if save_dir is not None:
+			if not os.path.exists(save_dir):
+				os.makedirs(save_dir)
 		location = self.locations
-		dir_name = self.dir_name
 		name_where = self.where
 
 		download_link = add_link_exte(location, ext)
@@ -104,10 +97,12 @@ class GetPBF:
 			self._download(download_link[i], save_f)
 		return self
 			
-	def _download(self, from_, to_):
-		response = requests.get(from_)
-		with open(to_, "wb") as file:
-			file.write(response.content)
+	def _download(self, from_, to_, force_download=False):
+		exists = os.path.exists(to_)
+		if not exists or force_download:
+			response = requests.get(from_)
+			with open(to_, "wb") as file:
+				file.write(response.content)
 		
 
 
