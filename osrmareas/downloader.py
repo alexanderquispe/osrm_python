@@ -93,7 +93,7 @@ class GetPBF:
 		download_link = add_link_exte(location, ext)
 		file_name = add_link_exte(name_where)
 		for i, file in enumerate(file_name):
-			save_f = dir_name + '/' + file
+			save_f = save_dir + '/' + file
 			self._download(download_link[i], save_f)
 		return self
 			
