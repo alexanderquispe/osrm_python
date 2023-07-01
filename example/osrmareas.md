@@ -1,8 +1,4 @@
----
-title: osrm areas
-jupyter: python3
-format: gfm
----
+# osrm areas
 
 # OSRM areas
 
@@ -10,23 +6,20 @@ format: gfm
 
 From GitHub
 
-```
-pip install git+https://github.com/alexanderquispe/osrm_python
-```
-Specific branch 
+    pip install git+https://github.com/alexanderquispe/osrm_python
 
-```
-pip install git+https://github.com/alexanderquispe/osrm_python@{branch}
-```
+Specific branch
+
+    pip install git+https://github.com/alexanderquispe/osrm_python@{branch}
 
 ## Download `PBF` files from [geofabrik](https://download.geofabrik.de/)
 
-```{python}
+``` python
 from osrmareas.downloader import GetPBF
 download = GetPBF()
 ```
 
-```{python}
+``` python
 import os
 def dir_tree(path):
     for root, dirs, files in os.walk(path):
@@ -38,25 +31,31 @@ def dir_tree(path):
             print('{}{}'.format(sub_indent, file))
 ```
 
-We can download files using the methods `GetPBF.country([where], continent=None).get()` for countries and `GetPBF.sub_region([where], continent=None, country=None).get()` for sub-regions within some countries.
+We can download files using the methods
+`GetPBF.country([where], continent=None).get()` for countries and
+`GetPBF.sub_region([where], continent=None, country=None).get()` for
+sub-regions within some countries.
 
 The database can be called as follows:
 
-```py
+``` py
 import osrmareas.downloader as dwnl
 dwnl.cnt # continent
 dnwl.cntry # continent, countries
 dnwl.region # continent, countries, regions
 ```
 
-For file downloads, you can specify the name of the folder (if it does not exist, it will be created) where the file(s) will be downloaded. If a file with the same name already exists, it will skip the download. You can force the download with the `get(force_download=True)` parameter.
+For file downloads, you can specify the name of the folder (if it does
+not exist, it will be created) where the file(s) will be downloaded. If
+a file with the same name already exists, it will skip the download. You
+can force the download with the `get(force_download=True)` parameter.
 
-```{python}
+``` python
 download.country(['peru', 'pakistan']).get(save_dir='country_pbf')
 dir_tree("country_pbf")
 ```
 
-```{python}
+``` python
 download.sub_region(['alberta']).get(save_dir='sub_region_pbf')
 # download.sub_region(['alberta'], country=["canada"], continent=["north-america"])
 ```
@@ -65,33 +64,35 @@ download.sub_region(['alberta']).get(save_dir='sub_region_pbf')
 
 For the local OSRM configuration, there are several steps involved.
 
-- Download the binary files and save them in a specific folder (recommended: `C:\osrm`).
+- Download the binary files and save them in a specific folder
+  (recommended: `C:\osrm`).
 - Import the server module.
-  1. Generate the OSRM file.
-  2. Prepare the server.
-  3. Run OSRM locally.
+  1.  Generate the OSRM file.
+  2.  Prepare the server.
+  3.  Run OSRM locally.
 
-```{python}
+``` python
 from osrmareas.osrm import Server
 cnd_alb = Server("alberta-latest.osm", "sub_region_pbf")
 ```
 
-Both `gen_osrm_1()` and `prepare_server_2()` functions can consume up to 100% of the CPU.
+Both `gen_osrm_1()` and `prepare_server_2()` functions can consume up to
+100% of the CPU.
 
-```{python}
+``` python
 cnd_alb.gen_osrm_1()
 cnd_alb.prepare_server_2()
 ```
 
 After preparing the server, there will be new files generated.
 
-```{python}
+``` python
 dir_tree('sub_region_pbf')
 ```
 
 We can start the server as follows:
 
-```{python}
+``` python
 cnd_alb.run_server()
 ```
 
@@ -99,7 +100,7 @@ We can make route queries using `areas.get_osrm_routes(from, to)`.
 
 Describe el código en inglés
 
-```{python}
+``` python
 from osrmareas import areas
 from_ = [53.550905, -113.268436]
 to_ = [53.548449, -113.258648]
@@ -107,31 +108,33 @@ rt = areas.get_osrm_route(from_, to_)
 rt
 ```
 
-```{python}
+``` python
 rt.plot()
 ```
 
-the [Google Maps route](https://www.google.com/maps/dir/53.550905,+-113.268436/53.548449,+-113.258648/@53.5489972,-113.2648387,17z/data=!4m10!4m9!1m3!2m2!1d-113.268436!2d53.550905!1m3!2m2!1d-113.258648!2d53.548449!3e0?entry=ttu)
-
+the [Google Maps
+route](https://www.google.com/maps/dir/53.550905,+-113.268436/53.548449,+-113.258648/@53.5489972,-113.2648387,17z/data=!4m10!4m9!1m3!2m2!1d-113.268436!2d53.550905!1m3!2m2!1d-113.258648!2d53.548449!3e0?entry=ttu)
 
 We can also obtain all routes within a default radius (in kilometers).
 
-```{python}
+``` python
 all_rt=areas.get_routes(from_, 5)
 all_rt
 ```
 
-```{python}
+``` python
 all_rt.plot()
 ```
 
-Finally, we can see a difference between the radius we defined in the area radius parameter. Some points are above 5km radius. We can filter and obtain the area of the extreme points using `areas.get_ameba()`.
+Finally, we can see a difference between the radius we defined in the
+area radius parameter. Some points are above 5km radius. We can filter
+and obtain the area of the extreme points using `areas.get_ameba()`.
 
-```{python}
+``` python
 ameba = areas.get_ameba(all_rt, max_km = 5, alpha = 80)
 ```
 
-```{python}
+``` python
 ameba.crs = None
 ameba.plot()
 ameba = ameba.set_crs(4326)
