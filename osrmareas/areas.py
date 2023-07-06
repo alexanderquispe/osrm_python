@@ -1,7 +1,8 @@
 import requests, pandas as pd, alphashape
+from tqdm import tqdm
 import geopandas as gpd, numpy as np
 from shapely.geometry import LineString, Point
-from shapely import Polygon
+from shapely.geometry import Polygon
 
 crs_moll='EPSG:3857'
 crs_lat='EPSG:4326'
@@ -40,13 +41,13 @@ def get_osrm_route(from_, to_, how='driving'):
 	# route.append([-66.744416, -54.975603])dd
 	line = gpd.GeoDataFrame(geometry=[LineString(route)]).set_crs(crs_lat)
 	line = line.assign(
-		dist_km=dist/1000, x = to_[0], y = to_[1],
-		x_begin = from_[0], y_begin = from_[1]
+		dist_driving_km=dist/1000, dest_lon = to_[0], dest_lat = to_[1],
+		origin_lon = from_[0], origin_lat = from_[1]
 	)
 	return line
 
 def get_routes(
-	center_lat_long, radius_km=10, grid_km_size=1
+	center_lat_long, radius_km=10, grid_km_size=1, filter_km=True
 	):
 
 	n_grid = radius_km/grid_km_size * 2
@@ -69,15 +70,20 @@ def get_routes(
 			final_routes.append(final)
 	# osrm routes
 	all_routes_df = gpd.GeoDataFrame()
-	for final in final_routes:
+	for final in tqdm(final_routes):
 		center1 = list(reversed(center))
 		final1 = list(reversed(final))
 		all_routes_df = \
 			pd.concat([all_routes_df, get_osrm_route(center1, final1)])
 	
+	if filter_km:
+		rows_inside = all_routes_df['dist_driving_km']  < radius_km
+		all_routes_df_crop = all_routes_df.loc[rows_inside]
+		return all_routes_df_crop
+	
 	return all_routes_df
 
-def get_ameba(df, max_km=None, alpha = 0, xcol='x', ycol='y', km_col='dist_km', crs=crs_lat):
+def get_ameba(df, max_km=None, alpha = 0, xcol='dest_lon', ycol='dest_lat', km_col='dist_driving_km', crs=crs_lat):
 	if max_km is None:
 		max_km=np.mean(df[km_col])
 	crop_df = df.copy()
@@ -87,8 +93,9 @@ def get_ameba(df, max_km=None, alpha = 0, xcol='x', ycol='y', km_col='dist_km', 
 		crop_df = df.loc[crop_df_rows]
 	border = []
 	for _, row in crop_df.iterrows():
-		border.append((row[xcol], row[ycol]))
+		border.append((row[ycol], row[xcol]))
 	bd = alphashape.alphashape(border, alpha)
-	gdf = gpd.GeoDataFrame(geometry=[bd]).\
-		set_crs(crs, allow_override=True)
+	gdf = gpd.GeoDataFrame(geometry=[bd])
+	if crs is not None:
+		gdf=gdf.set_crs(crs, allow_override=True)
 	return gdf
