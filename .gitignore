@@ -1,2 +1,6 @@
 data/
 *__pycache__
+examples/continent
+examples/country
+examples/subregion
+examples/data-pbf
