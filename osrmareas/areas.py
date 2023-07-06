@@ -95,6 +95,7 @@ def get_ameba(df, max_km=None, alpha = 0, xcol='dest_lon', ycol='dest_lat', km_c
 	for _, row in crop_df.iterrows():
 		border.append((row[xcol], row[ycol]))
 	bd = alphashape.alphashape(border, alpha)
-	gdf = gpd.GeoDataFrame(geometry=[bd]).\
-		set_crs(crs, allow_override=True)
+	gdf = gpd.GeoDataFrame(geometry=[bd])
+	# .\
+		# set_crs(crs, allow_override=True)
 	return gdf
