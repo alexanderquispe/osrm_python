@@ -83,7 +83,7 @@ def get_routes(
 	
 	return all_routes_df
 
-def get_ameba(df, max_km=None, alpha = 0, xcol='dest_lon', ycol='dest_lat', km_col='dist_driving_km', crs=crs_lat):
+def get_ameba(df, max_km=None, alpha = 0, xcol='dest_lon', ycol='dest_lat', km_col='dist_driving_km', crs=None):
 	if max_km is None:
 		max_km=np.mean(df[km_col])
 	crop_df = df.copy()
@@ -96,6 +96,6 @@ def get_ameba(df, max_km=None, alpha = 0, xcol='dest_lon', ycol='dest_lat', km_c
 		border.append((row[xcol], row[ycol]))
 	bd = alphashape.alphashape(border, alpha)
 	gdf = gpd.GeoDataFrame(geometry=[bd])
-	# .\
-		# set_crs(crs, allow_override=True)
+	if crs is not None:
+		gdf=gdf.set_crs(crs, allow_override=True)
 	return gdf
