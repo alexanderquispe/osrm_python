@@ -83,7 +83,7 @@ def get_routes(
 	
 	return all_routes_df
 
-def get_ameba(df, max_km=None, alpha = 0, xcol='dest_lon', ycol='dest_lat', km_col='dist_km', crs=crs_lat):
+def get_ameba(df, max_km=None, alpha = 0, xcol='dest_lon', ycol='dest_lat', km_col='dist_driving_km', crs=crs_lat):
 	if max_km is None:
 		max_km=np.mean(df[km_col])
 	crop_df = df.copy()
