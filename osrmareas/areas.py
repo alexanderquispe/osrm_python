@@ -77,8 +77,7 @@ def get_routes(
 			pd.concat([all_routes_df, get_osrm_route(center1, final1)])
 	
 	if filter_km:
-		rows_inside = all_routes_df['dist_driving_km']  < radius_km
-		all_routes_df_crop = all_routes_df.loc[rows_inside]
+		all_routes_df_crop = all_routes_df.query('dist_driving_km <= @radius_km')
 		return all_routes_df_crop
 	
 	return all_routes_df

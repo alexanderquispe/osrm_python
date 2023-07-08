@@ -2,7 +2,7 @@ data/
 *__pycache__
 examples/continent
 examples/country
-examples/subregion
+examples/sub_region_pbf
 examples/data-pbf
 
 *algo*
