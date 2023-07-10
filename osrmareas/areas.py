@@ -3,6 +3,9 @@ from tqdm import tqdm
 import geopandas as gpd, numpy as np
 from shapely.geometry import LineString, Point
 from shapely.geometry import Polygon
+import geopy.distance
+
+ecl_dist = geopy.distance.geodesic
 
 crs_moll='EPSG:3857'
 crs_lat='EPSG:4326'
@@ -41,7 +44,9 @@ def get_osrm_route(from_, to_, how='driving'):
 	# route.append([-66.744416, -54.975603])dd
 	line = gpd.GeoDataFrame(geometry=[LineString(route)]).set_crs(crs_lat)
 	line = line.assign(
-		dist_driving_km=dist/1000, dest_lon = to_[0], dest_lat = to_[1],
+		dist_driving_km=dist/1000, 
+		dist_eucl_km = ecl_dist((to_[0], to_[1]), (from_[0], from_[1])).km, #euclidean distance 
+		dest_lon = to_[0], dest_lat = to_[1],
 		origin_lon = from_[0], origin_lat = from_[1]
 	)
 	return line

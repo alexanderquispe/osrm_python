@@ -17,7 +17,8 @@ setup(
 		'geopandas',
 		'alphashape',
 		'shapely',
-        'tqdm'
+        'tqdm',
+        'geopy'
     ],
     long_description='''
     Using OSRM to create areas and routes within a radius.
