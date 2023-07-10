@@ -5,3 +5,4 @@ alphashape
 shapely
 tqdm
 twine
+geopy
