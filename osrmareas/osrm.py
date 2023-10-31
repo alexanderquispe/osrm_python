@@ -70,9 +70,7 @@ class Server:
                 subprocess.Popen(f"{gen_route}", shell=True).wait()
             else:
                 pass
-        print(
-            "Done, I have generated the local OSRM server with `{server}.run_server()`."
-        )
+
         self._prepare = True
         return self
 
@@ -86,3 +84,8 @@ class Server:
         print("The server is running in the background, you can start making queries.")
 
         return self
+
+    def run_all(self):
+        self.gen_osrm_1()
+        self.prepare_server_2()
+        self.run_server()
